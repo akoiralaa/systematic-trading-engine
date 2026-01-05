@@ -3,10 +3,10 @@ import pandas as pd
 from typing import Dict, Optional
 import logging
 
-from market_friction_model import MarketFrictionModel
-from bayesian_kelly import BayesianKellyCriterion
-from monte_carlo_stress_test import MonteCarloStressTest
-from regime_detector import RegimeDetector
+from .market_friction_model import MarketFrictionModel
+from .bayesian_kelly import BayesianKellyCriterion
+from .monte_carlo_stress_test import MonteCarloStressTest
+from .regime_detector import RegimeDetector
 
 logger = logging.getLogger(__name__)
 
