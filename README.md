@@ -170,10 +170,10 @@ cd trading-bot
 pip3 install -r requirements.txt
 
 # Set up credentials
-cp .env.example .env
-# Edit .env and add your Alpaca API keys:
-# ALPACA_API_KEY=your_key_here
-# ALPACA_SECRET_KEY=your_secret_here
+# Create a .env file and add your Alpaca API keys:
+echo "ALPACA_API_KEY=your_key_here" > .env
+echo "ALPACA_SECRET_KEY=your_secret_here" >> .env
+# Then edit .env with your actual credentials
 ```
 
 ## Running Tests
@@ -208,7 +208,7 @@ DiagnosticComplete | System environment is stable for execution.
 
 The main trading loop analyzes all 4 tickers and places trades when signals confirm:
 ```bash
-python3 src/quantum_fractal_system.py
+python3 src/quantum_fractal_engine.py
 ```
 
 **What happens each cycle (runs every 1 hour):**
@@ -233,7 +233,7 @@ python3 src/quantum_fractal_system.py
 
 Open another terminal to monitor active positions, PnL, and buying power:
 ```bash
-python3 src/portfolio_monitor.py
+python3 monitor_trades.py
 ```
 
 **Expected output:**
@@ -263,7 +263,7 @@ python3 src/portfolio_monitor.py
 
 Analyze historical performance across different market conditions:
 ```bash
-python3 src/advanced_backtester.py
+python3 src/backtester.py
 ```
 
 **Output includes:**
@@ -303,7 +303,7 @@ PYTHON
 
 ## Configuration
 
-Edit `src/quantum_fractal_system.py` to customize:
+Edit `src/quantum_fractal_engine.py` to customize:
 ```python
 STRATEGY_MAP = {
     'PLTR': {'lookback': 10, 'threshold': 0.20},   # Fast momentum
@@ -339,19 +339,15 @@ self.trader = AlpacaTrader(paper=False)  # REAL MONEY (use with caution)
 ```
 trading-bot/
 ├── src/
-│   ├── market_friction_model.py          # Transaction cost modeling
-│   ├── bayesian_kelly.py                 # Position sizing
-│   ├── monte_carlo_stress_test.py        # Risk metrics
-│   ├── regime_detector.py                # Market regime classification
-│   ├── quantum_fractal_engine.py         # Main orchestrator
-│   ├── advanced_backtester.py            # Backtesting engine
-│   ├── quantum_fractal_system.py         # Production loop
+│   ├── __init__.py
+│   ├── alpaca_connectivity_test.py       # API diagnostics
 │   ├── alpaca_trader.py                  # API integration
-│   ├── portfolio_monitor.py              # Real-time monitoring
-│   ├── alpaca_connectivity_test.py       # Diagnostics
-│   ├── vector_calculator.py              # Vector line calculation
-│   ├── fractal_detector.py               # Fractal patterns
-│   └── pattern_detector.py               # Entry patterns
+│   ├── backtester.py                     # Backtesting engine
+│   ├── bayesian_kelly.py                 # Position sizing
+│   ├── market_friction_model.py          # Transaction cost modeling
+│   ├── monte_carlo_stress_test.py        # Risk metrics
+│   ├── quantum_fractal_engine.py         # Main orchestrator
+│   └── regime_detector.py                # Market regime classification
 ├── tests/
 │   ├── test_bayesian_kelly.py            # 10 tests
 │   ├── test_market_friction.py           # 6 tests
@@ -361,6 +357,10 @@ trading-bot/
 │   └── logging_config.py
 ├── logs/                                 # Generated at runtime
 ├── data/                                 # Historical data cache
+├── monitor_trades.py                     # Real-time position monitoring
+├── real_time_trader.py                   # Real-time trading script
+├── run_optimized_alpaca.py               # Optimized Alpaca runner
+├── test_live_data.py                     # Live data testing
 ├── README.md
 ├── DEVELOPMENT_LOG.md
 ├── requirements.txt
