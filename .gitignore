@@ -52,8 +52,10 @@ env/
 .coverage
 htmlcov/
 
-# Data and logs
-data/
+# State persistence
+state/
+
+# Logs
 logs/
 *.log
 trade_log.json

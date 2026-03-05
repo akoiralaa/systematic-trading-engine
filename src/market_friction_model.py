@@ -90,10 +90,41 @@ class MarketFrictionModel:
     ) -> int:
         """
         Returns the maximum allowable position size based on ADV constraints.
-        
-        Adheres to institutional '1-day volume' participation limits to ensure 
+
+        Adheres to institutional '1-day volume' participation limits to ensure
         order completion within a single session without excessive price distortion.
         """
         max_qty = int(avg_volume * max_participation_rate)
         logger.info(f"LiquidityGuard | MaxSize: {max_qty} (Cap: {max_participation_rate*100}%)")
         return max_qty
+
+    def calculate_exit_price(
+        self, qty: int, avg_volume: float, price: float, exit_type: str = 'normal'
+    ) -> float:
+        """
+        Calculate realistic exit price including slippage.
+
+        Args:
+            qty: Number of shares to sell
+            avg_volume: Average daily volume
+            price: Current market price
+            exit_type: 'normal', 'stop_loss', or 'urgent'
+                       stop_loss/urgent exits have 2x slippage due to adverse conditions
+
+        Returns:
+            Expected execution price after friction
+        """
+        friction = self.calculate_total_friction(qty, avg_volume, price, side='sell')
+
+        # Stop losses and urgent exits typically experience worse fills
+        slippage_multiplier = 2.0 if exit_type in ('stop_loss', 'urgent') else 1.0
+
+        total_friction_bps = friction['total_friction_bps'] * slippage_multiplier
+
+        # Seller receives less (negative direction)
+        exit_price = price * (1 - total_friction_bps / 10000)
+
+        logger.debug(f"ExitFriction | Type: {exit_type} | Friction: {total_friction_bps:.2f}bps | "
+                     f"Price: {price:.2f} -> {exit_price:.2f}")
+
+        return exit_price

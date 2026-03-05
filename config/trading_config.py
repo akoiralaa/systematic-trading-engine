@@ -158,6 +158,42 @@ ENABLE_VOLATILITY_ADJUSTMENT = False
 MAX_VOLATILITY_THRESHOLD = 0.6  # 60% annualized vol
 
 # ============================================================================
+# PRODUCTION TRADER SETTINGS
+# ============================================================================
+
+# Symbols to monitor during live/paper trading
+TRADING_SYMBOLS = [
+    'SPY', 'QQQ', 'GOOGL', 'AMZN', 'NVDA',
+    'TSLA', 'META', 'NFLX', 'AMD', 'PLTR'
+]
+
+# Scan interval between trading cycles (seconds)
+SCAN_INTERVAL_SECONDS = 300  # 5 minutes
+
+# Order fill timeout (seconds)
+FILL_TIMEOUT_SECONDS = 30
+
+# Maximum hold time for any position (minutes)
+MAX_HOLD_MINUTES = 240  # 4 hours
+
+# Minutes before market close to force-exit all positions
+EOD_CLOSE_MINUTES = 5
+
+# Timeframe for bar data in production
+PRODUCTION_TIMEFRAME = '5Min'
+
+# Historical lookback for production data (days)
+PRODUCTION_LOOKBACK_DAYS = 5
+
+# Maximum concurrent open positions
+MAX_CONCURRENT_POSITIONS = 5
+
+# Maximum capital to deploy per position as % of available buying power
+# 0.10 = 10% of undeployed cash per trade
+# With 5 max positions this caps total deployment at ~50% of account
+MAX_POSITION_CAPITAL_PCT = 0.10
+
+# ============================================================================
 # DASHBOARD & DISPLAY
 # ============================================================================
 
