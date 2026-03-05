@@ -31,8 +31,8 @@ class MarketFrictionModel:
         Calculates expected slippage via a non-linear volume-participation model.
         
         Uses the power-law impact formula:
-        $$I = \alpha \cdot (\frac{V_{order}}{V_{ADV}})^{1.5}$$
-        Where $\alpha$ is the market_impact_coeff.
+        I = alpha * (V_order / V_ADV)^1.5   [in basis points]
+        Where alpha is the market_impact_coeff.
         """
         if avg_volume <= 0 or qty <= 0:
             return {

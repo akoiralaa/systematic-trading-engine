@@ -1,6 +1,6 @@
 # Statistical Vector Zone Trading System
 
-[![Tests](https://github.com/akoiralaa/trading-bot/actions/workflows/tests.yml/badge.svg)](https://github.com/akoiralaa/trading-bot/actions/workflows/tests.yml)
+[![Tests](https://github.com/akoiralaa/systematic-trading-engine/actions/workflows/tests.yml/badge.svg)](https://github.com/akoiralaa/systematic-trading-engine/actions/workflows/tests.yml)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 

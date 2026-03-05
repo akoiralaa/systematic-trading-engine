@@ -84,19 +84,19 @@ class ExitManager:
             return (True, 'trailing_stop', current_price)
 
         # 4. TIME LIMIT
-        now = _now_eastern()
+        # Use naive datetimes for duration — timezone is irrelevant for elapsed minutes.
         entry_time = position['entry_time']
         if hasattr(entry_time, 'to_pydatetime'):
             entry_time = entry_time.to_pydatetime()
-        if entry_time.tzinfo is None and EASTERN is not None:
-            entry_time = EASTERN.localize(entry_time)
-        hold_time_minutes = (now - entry_time).total_seconds() / 60
+        if entry_time.tzinfo is not None:
+            entry_time = entry_time.replace(tzinfo=None)
+        hold_time_minutes = (datetime.now() - entry_time).total_seconds() / 60
         if hold_time_minutes >= self.max_hold_minutes:
             logger.warning(f"Time limit exceeded: {position['symbol']} (held {hold_time_minutes:.0f} min)")
             return (True, 'time_limit', current_price)
 
         # 5. END OF DAY
-        current_time = now.time()
+        current_time = _now_eastern().time()
         if current_time >= self.market_close_time:
             logger.warning(f"End of day exit: {position['symbol']}")
             return (True, 'end_of_day', current_price)
@@ -131,13 +131,12 @@ class ExitManager:
         target_distance_pct = ((position['target_price'] - current_price) / current_price) * 100
         stop_distance_pct = ((current_price - position['stop_price']) / current_price) * 100
 
-        now = _now_eastern()
         entry_time = position['entry_time']
         if hasattr(entry_time, 'to_pydatetime'):
             entry_time = entry_time.to_pydatetime()
-        if entry_time.tzinfo is None and EASTERN is not None:
-            entry_time = EASTERN.localize(entry_time)
-        hold_time_minutes = (now - entry_time).total_seconds() / 60
+        if entry_time.tzinfo is not None:
+            entry_time = entry_time.replace(tzinfo=None)
+        hold_time_minutes = (datetime.now() - entry_time).total_seconds() / 60
         time_remaining = self.max_hold_minutes - hold_time_minutes
 
         summary = {
